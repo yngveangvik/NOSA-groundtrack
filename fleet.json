@@ -1,0 +1,317 @@
+[
+  {
+    "id": 62702,
+    "name": "NorSat-4",
+    "type": "LEO",
+    "mission": "Tracks ships and tests low-light imaging for maritime surveillance.",
+    "owner": "Norwegian Space Agency",
+    "operator": "Statsat (Space Norway)",
+    "source": "https://romdirektoratet.no/satellitter-infrastruktur-og-statlige-romaktoerer",
+    "benefit": "Tracks ships and tests low-light imaging for maritime surveillance.",
+    "capabilities": [
+      "Automatic Identification System (AIS)",
+      "Low-light camera"
+    ],
+    "launchDate": "2025-01-14T19:09:00Z",
+    "launchSite": "Vandenberg, USA",
+    "launchSource": "https://romdirektoratet.no/en/aktuelt/successful-launch-for-norways-new-satellite",
+    "portrait": "assets/62702.webp",
+    "portraitCredit": "Illustration: SFL"
+  },
+  {
+    "id": 42826,
+    "name": "NorSat-1",
+    "type": "LEO",
+    "mission": "Tracks ships and measures solar irradiance and ionospheric plasma.",
+    "owner": "Norwegian Space Agency",
+    "operator": "Statsat (Space Norway)",
+    "source": "https://romdirektoratet.no/satellitter-infrastruktur-og-statlige-romaktoerer",
+    "benefit": "Tracks ships and measures solar irradiance and ionospheric plasma.",
+    "capabilities": [
+      "AIS receiver",
+      "Solar radiometer",
+      "Langmuir probes"
+    ],
+    "launchDate": "2017-07-14T06:36:51Z",
+    "launchSite": "Baikonur, Kazakhstan",
+    "launchSource": "https://documents.un.org/doc/undoc/gen/v17/085/99/pdf/v1708599.pdf",
+    "portrait": "assets/42826.webp",
+    "portraitCredit": "Image: Norwegian Space Agency"
+  },
+  {
+    "id": 42828,
+    "name": "NorSat-2",
+    "type": "LEO",
+    "mission": "Tracks ships and tests ship-to-satellite data exchange.",
+    "owner": "Norwegian Coastal Administration",
+    "operator": "Statsat (Space Norway)",
+    "source": "https://romdirektoratet.no/satellitter-infrastruktur-og-statlige-romaktoerer",
+    "benefit": "Tracks ships and tests ship-to-satellite data exchange.",
+    "capabilities": [
+      "AIS receiver",
+      "VHF Data Exchange System (VDES)"
+    ],
+    "launchDate": "2017-07-14T06:36:51Z",
+    "launchSite": "Baikonur, Kazakhstan",
+    "launchSource": "https://documents.un.org/doc/undoc/gen/v17/085/99/pdf/v1708599.pdf",
+    "portrait": "assets/norsat12.webp",
+    "portraitCredit": "Illustration: NorSat-1 and -2"
+  },
+  {
+    "id": 48272,
+    "name": "NorSat-3",
+    "type": "LEO",
+    "mission": "Combines ship identification with passive detection of marine radar signals.",
+    "owner": "Norwegian Coastal Administration",
+    "operator": "Statsat (Space Norway)",
+    "source": "https://romdirektoratet.no/satellitter-infrastruktur-og-statlige-romaktoerer",
+    "benefit": "Combines ship identification with passive detection of marine radar signals.",
+    "capabilities": [
+      "AIS receiver",
+      "Navigation radar detector"
+    ],
+    "launchDate": "2021-04-29T01:50:00Z",
+    "launchSite": "Kourou, French Guiana",
+    "launchSource": "https://www.esa.int/Enabling_Support/Space_Transportation/Europe_s_Spaceport/Vega_s_first_launch_this_year",
+    "portrait": "assets/48272.webp",
+    "portraitCredit": "Image: Norwegian Space Agency"
+  },
+  {
+    "id": 68454,
+    "name": "AISSat-4",
+    "type": "LEO",
+    "mission": "Collects ship identification messages for the Norwegian Coastal Administration.",
+    "owner": "Norwegian Coastal Administration",
+    "operator": "Statsat (Space Norway)",
+    "source": "https://www.kystverket.no/nyheter/2024/ny-satellitt-for-havovervakning-bygges-pa-rekordtid/",
+    "benefit": "Collects ship identification messages for the Norwegian Coastal Administration.",
+    "capabilities": [
+      "Automatic Identification System (AIS)"
+    ],
+    "launchDate": "2026-03-30T11:02:00Z",
+    "launchSite": "Vandenberg, USA",
+    "launchSource": "https://spacenorway.com/press-release/space-norways-in-orbit-laboratory-is-now-opened-company-confirms-successful-launch/",
+    "portrait": "assets/68454.webp",
+    "portraitCredit": "Illustration: AISSat-4"
+  },
+  {
+    "id": 68490,
+    "name": "Mimir-1",
+    "type": "LEO",
+    "mission": "Provides an in-orbit laboratory for testing satellite technology.",
+    "owner": "Space Norway",
+    "operator": "Space Norway",
+    "source": "https://spacenorway.com/projects/our-projects/mimir/",
+    "benefit": "Provides an in-orbit laboratory for testing satellite technology.",
+    "capabilities": [
+      "In-orbit payload testing"
+    ],
+    "launchDate": "2026-03-30T11:02:00Z",
+    "launchSite": "Vandenberg, USA",
+    "launchSource": "https://spacenorway.com/press-release/space-norways-in-orbit-laboratory-is-now-opened-company-confirms-successful-launch/",
+    "portrait": "assets/68490-2.webp",
+    "portraitCredit": "Illustration: Mimir-1"
+  },
+  {
+    "id": 100610,
+    "name": "FramSat-1",
+    "type": "LEO",
+    "mission": "Tests a student-built solar sensor for spacecraft attitude determination.",
+    "owner": "Orbit NTNU",
+    "operator": "Orbit NTNU",
+    "source": "https://orbitntnu.com/projects/FramSat-1",
+    "benefit": "Tests a student-built solar sensor for spacecraft attitude determination.",
+    "capabilities": [
+      "Sun sensor",
+      "Radio link"
+    ],
+    "launchDate": "2026-09-05T20:12:00Z",
+    "launchSite": "Andøya, Norway",
+    "launchSource": "https://orbitntnu.com/projects/FramSat-1",
+    "portrait": null,
+    "portraitCredit": "Satellite symbol"
+  },
+  {
+    "id": -1,
+    "name": "HYPSO-1",
+    "type": "LEO",
+    "mission": "Images coastal waters to study phytoplankton and water quality.",
+    "owner": "NTNU",
+    "operator": "NTNU SmallSat Lab",
+    "source": "https://www.ntnu.edu/smallsat",
+    "benefit": "Images coastal waters to study phytoplankton and water quality.",
+    "capabilities": [
+      "Hyperspectral camera"
+    ],
+    "launchDate": "2022-01-13T15:25:00Z",
+    "launchSite": "Cape Canaveral, USA",
+    "launchSource": "https://nyheter.ntnu.no/en/norways-first-university-research-satellite-in-orbit-around-the-earth/",
+    "portrait": null,
+    "portraitCredit": "Satellite symbol"
+  },
+  {
+    "id": -2,
+    "name": "SelfieSat",
+    "type": "LEO",
+    "mission": "Student mission designed to photograph images displayed on an external screen.",
+    "owner": "Orbit NTNU",
+    "operator": "Orbit NTNU",
+    "source": "https://nyheter.ntnu.no/ntnu-satelitt-brant-opp-i-atmosfaeren/",
+    "benefit": "Student mission designed to photograph images displayed on an external screen.",
+    "capabilities": [
+      "Camera and display"
+    ],
+    "launchDate": "2022-05-25T18:35:00Z",
+    "launchSite": "Cape Canaveral, USA",
+    "launchSource": "https://nyheter.ntnu.no/ntnu-satelitt-brant-opp-i-atmosfaeren/",
+    "portrait": null,
+    "portraitCredit": "Satellite symbol"
+  },
+  {
+    "id": 60531,
+    "name": "HYPSO-2",
+    "type": "LEO",
+    "mission": "Measures the colour of coastal waters to study ocean ecosystems.",
+    "owner": "NTNU",
+    "operator": "NTNU SmallSat Lab",
+    "source": "https://www.ntnu.edu/smallsat",
+    "benefit": "Measures the colour of coastal waters to study ocean ecosystems.",
+    "capabilities": [
+      "Hyperspectral camera"
+    ],
+    "launchDate": "2024-08-16T18:56:00Z",
+    "launchSite": "Vandenberg, USA",
+    "launchSource": "https://www.ntnu.edu/smallsat",
+    "portrait": "assets/hypso-photo.webp",
+    "portraitCredit": "Photo: NTNU SmallSat Lab"
+  },
+  {
+    "id": 55015,
+    "name": "Birkeland",
+    "type": "LEO",
+    "mission": "Works with Huygens to locate radio-frequency emitters from orbit.",
+    "owner": "FFI / Netherlands Ministry of Defence",
+    "operator": "Norwegian operations, joint Norwegian–Dutch mission",
+    "source": "https://www.ffi.no/forskning/prosjekter/milspace2",
+    "benefit": "Works with Huygens to locate radio-frequency emitters from orbit.",
+    "capabilities": [
+      "Passive radio-frequency sensing"
+    ],
+    "launchDate": "2023-01-03T14:56:00Z",
+    "launchSite": "Cape Canaveral, USA",
+    "launchSource": "https://www.ffi.no/aktuelt/nyheter/na-er-birkeland-og-huygens-i-bane",
+    "portrait": "assets/55015-0.webp",
+    "portraitCredit": "Illustration: NanoAvionics"
+  },
+  {
+    "id": 55093,
+    "name": "Huygens",
+    "type": "LEO",
+    "mission": "Works with Birkeland to locate radio-frequency emitters from orbit.",
+    "owner": "FFI / Netherlands Ministry of Defence",
+    "operator": "Norwegian operations, joint Norwegian–Dutch mission",
+    "source": "https://www.ffi.no/forskning/prosjekter/milspace2",
+    "benefit": "Works with Birkeland to locate radio-frequency emitters from orbit.",
+    "capabilities": [
+      "Passive radio-frequency sensing"
+    ],
+    "launchDate": "2023-01-03T14:56:00Z",
+    "launchSite": "Cape Canaveral, USA",
+    "launchSource": "https://www.ffi.no/aktuelt/nyheter/na-er-birkeland-og-huygens-i-bane",
+    "portrait": "assets/55015-1.webp",
+    "portraitCredit": "Illustration: MilSpace2"
+  },
+  {
+    "id": 60422,
+    "name": "ASBM 1",
+    "type": "HEO",
+    "mission": "Provides broadband connectivity across the Arctic.",
+    "owner": "Space Norway",
+    "operator": "Space Norway",
+    "source": "https://spacenorway.com/infrastructure/satellite-fleet/",
+    "benefit": "Provides broadband connectivity across the Arctic.",
+    "capabilities": [
+      "Satellite broadband"
+    ],
+    "launchDate": "2024-08-12T02:02:00Z",
+    "launchSite": "Vandenberg, USA",
+    "launchSource": "https://spacenorway.com/press-release/space-norway-confirms-the-successful-launch-of-asbm-satellites/",
+    "portrait": "assets/60422-0.webp",
+    "portraitCredit": "Illustration: ASBM 1 and 2"
+  },
+  {
+    "id": 60423,
+    "name": "ASBM 2",
+    "type": "HEO",
+    "mission": "Provides broadband connectivity across the Arctic.",
+    "owner": "Space Norway",
+    "operator": "Space Norway",
+    "source": "https://spacenorway.com/infrastructure/satellite-fleet/",
+    "benefit": "Provides broadband connectivity across the Arctic.",
+    "capabilities": [
+      "Satellite broadband"
+    ],
+    "launchDate": "2024-08-12T02:02:00Z",
+    "launchSite": "Vandenberg, USA",
+    "launchSource": "https://spacenorway.com/press-release/space-norway-confirms-the-successful-launch-of-asbm-satellites/",
+    "portrait": "assets/60422-0.webp",
+    "portraitCredit": "Illustration: ASBM 1 and 2"
+  },
+  {
+    "id": 32487,
+    "name": "THOR 5",
+    "type": "GEO",
+    "mission": "Relays television and data signals from geostationary orbit.",
+    "owner": "Space Norway",
+    "operator": "Space Norway",
+    "source": "https://spacenorway.com/infrastructure/satellite-fleet/",
+    "benefit": "Relays television and data signals from geostationary orbit.",
+    "capabilities": [
+      "Television broadcasting",
+      "Data communications"
+    ],
+    "launchDate": "2008-02-11T11:34:00Z",
+    "launchSite": "Baikonur, Kazakhstan",
+    "launchSource": "https://www.ilslaunch.com/missions/thor-5/",
+    "portrait": "assets/32487-0.webp",
+    "portraitCredit": "Illustration: THOR 5"
+  },
+  {
+    "id": 36033,
+    "name": "THOR 6",
+    "type": "GEO",
+    "mission": "Relays television and data signals from geostationary orbit.",
+    "owner": "Space Norway",
+    "operator": "Space Norway",
+    "source": "https://spacenorway.com/infrastructure/satellite-fleet/",
+    "benefit": "Relays television and data signals from geostationary orbit.",
+    "capabilities": [
+      "Television broadcasting",
+      "Data communications"
+    ],
+    "launchDate": "2009-10-29T20:00:00Z",
+    "launchSite": "Kourou, French Guiana",
+    "launchSource": "https://www.esa.int/ESA_Multimedia/Images/2009/10/Ariane_5_V192_liftoff",
+    "portrait": "assets/36033.webp",
+    "portraitCredit": "Illustration: THOR 6"
+  },
+  {
+    "id": 40613,
+    "name": "THOR 7",
+    "type": "GEO",
+    "mission": "Delivers broadcast services and maritime broadband.",
+    "owner": "Space Norway",
+    "operator": "Space Norway",
+    "source": "https://spacenorway.com/infrastructure/satellite-fleet/",
+    "benefit": "Delivers broadcast services and maritime broadband.",
+    "capabilities": [
+      "Television broadcasting",
+      "Maritime broadband"
+    ],
+    "launchDate": "2015-04-26T20:00:00Z",
+    "launchSite": "Kourou, French Guiana",
+    "launchSource": "https://www.esa.int/Enabling_Support/Space_Transportation/Ariane_5_s_first_launch_of_2015",
+    "portrait": "assets/40613-0.webp",
+    "portraitCredit": "Illustration: THOR 7"
+  }
+]

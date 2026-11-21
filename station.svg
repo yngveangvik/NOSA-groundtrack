@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Satellite-Dish--Streamline-Sharp" xmlns="http://www.w3.org/2000/svg" width="5cm" height="5cm" viewBox="0 0 141.73228 141.73228">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 4px;
+      }
+    </style>
+  </defs>
+  <g id="satellite-dish--broadcast-satellite-share-transmit-satellite">
+    <path id="Vector_1362" data-name="Vector 1362" class="cls-1" d="M126.35308,73.57284L66.80584,14.02559l-10.82704,10.82677c-16.44348,16.44354-16.44348,43.10354,0,59.54724,16.44343,16.4437,43.10381,16.4437,59.54752,0,0,0,10.82677-10.82677,10.82677-10.82677Z"/>
+    <path id="Vector_1365" data-name="Vector 1365" class="cls-1" d="M96.57999,43.79921l16.24016-16.24016"/>
+    <path id="Vector_1364" data-name="Vector 1364" class="cls-1" d="M101.99337,127.70669H15.37921l33.61447-52.52283c1.84889,3.30217,4.17729,6.40783,6.98511,9.21575,7.28344,7.28317,16.57118,11.3405,26.08792,12.172l19.92667,31.13509Z"/>
+  </g>
+</svg>

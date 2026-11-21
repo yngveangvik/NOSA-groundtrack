@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Satellite--Streamline-Sharp" xmlns="http://www.w3.org/2000/svg" width="5cm" height="5cm" viewBox="0 0 141.73228 141.73228">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 4px;
+      }
+    </style>
+  </defs>
+  <g id="satellite--satellite-astronomy-communication-nasa-science-orbit">
+    <path id="Vector_2866" data-name="Vector 2866" class="cls-1" d="M122.33089,19.40109c10.7618,10.76181,10.7618,28.21013,0,38.97204-10.76181,10.76181-28.21023,10.76181-38.97204,0-10.76181-10.76192-10.76181-28.21023,0-38.97204s28.21023-10.76181,38.97204,0Z"/>
+    <path id="Vector_3946" data-name="Vector 3946" class="cls-1" d="M84.71219,18.04585c.54134,3.78894,4.2219,13.96496,14.61452,24.35747,10.39262,10.39251,20.5687,14.07318,24.35753,14.61446"/>
+    <path id="Vector_3947" data-name="Vector 3947" class="cls-1" d="M99.32941,42.40078L29.26883,112.46152"/>
+    <path id="Vector_3948" data-name="Vector 3948" class="cls-1" d="M123.05682,56.88386l-35.87072,73.5187"/>
+    <path id="Vector_3949" data-name="Vector 3949" class="cls-1" d="M84.80476,18.69345L11.33004,54.54305"/>
+  </g>
+</svg>
