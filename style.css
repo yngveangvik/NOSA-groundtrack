@@ -84,3 +84,37 @@ body.panels-open .overlay{font-size:.85rem;padding:12px;top:clamp(76px,10vh,112p
 .sat-strip .instrument-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sat-strip [data-field="Sub-satellite point"]{border:1px solid var(--dark);padding:7px 9px}.instrument-grid [data-extra] strong{font-size:1.05rem}
 @media(max-width:1450px){body.panels-open .fleet-panel{left:var(--gutter);z-index:8;width:clamp(185px,20vw,270px)}body.panels-open .dashboard{z-index:7;pointer-events:none}body.panels-open .overlay{pointer-events:auto}.controls-panel{left:calc(var(--gutter) + clamp(185px,20vw,270px) + 12px)}}
 @media(max-height:760px){.sat-row{padding:2px 4px;font-size:.78rem}.fleet-group{margin-bottom:3px}.display-settings,.time-controls,.map-bottom,.utility-controls{margin-top:8px}.fleet-panel .panel-heading,.detail-panel .panel-heading{min-height:18px}}
+
+/* Compact supporting text and fixed space for the TV profile. */
+.sat-strip {
+  font-size: .84rem;
+  gap: clamp(7px, 1.25vh, 20px);
+}
+.sat-strip h3,
+.sat-strip .instrument-grid > div {
+  font-size: .73rem;
+}
+.sat-strip #strip-pass,
+.sat-strip [data-field="Sub-satellite point"] strong {
+  font-size: 1rem;
+}
+.sat-strip section:is([data-field="Owner"], [data-field="Operator"]) {
+  display: grid;
+  grid-template-columns: 4.5em minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: .6em;
+  min-height: 2.9em;
+}
+.sat-strip section:is([data-field="Owner"], [data-field="Operator"]) > * {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-height: 820px) {
+  .sat-strip { font-size: .79rem; gap: clamp(5px, 1vh, 9px); }
+}
+@media (max-height: 620px) {
+  .sat-strip { gap: 5px; }
+}
+
+.language-switch { display: inline-flex; gap: 2px; }
+.language-switch button[aria-pressed="true"] { color: var(--orange); border-color: var(--orange); }
