@@ -118,3 +118,23 @@ body.panels-open .overlay{font-size:.85rem;padding:12px;top:clamp(76px,10vh,112p
 
 .language-switch { display: inline-flex; gap: 2px; }
 .language-switch button[aria-pressed="true"] { color: var(--orange); border-color: var(--orange); }
+
+/* Instrument readings and identity records share one left alignment. */
+.sat-strip { row-gap: clamp(5px,.7vh,8px); }
+.sat-strip .instrument-grid { gap: clamp(6px,.65vh,8px); }
+.sat-strip > .instrument-grid:first-of-type { margin-top: .45rem; }
+.sat-strip section[data-field="Capabilities"],
+.sat-strip section[data-field="Predicted pass"],
+.sat-strip > .sat-facts {
+  margin-top: clamp(7px,1vh,12px);
+}
+.sat-strip .coordinates { display:grid; grid-template-columns:1fr 1fr; font-variant-numeric:tabular-nums; }
+.sat-strip .coordinates strong, .sat-strip .instrument-grid strong { font-weight:400; }
+.sat-strip .instrument-grid small { font-size:.7em; color:var(--gray); }
+.sat-strip .section-icon, .sat-strip #strip-pass-label { background-size:1rem; padding-left:1.45rem; }
+.sat-strip #strip-pass { white-space:pre-line; }
+.sat-strip .sat-facts { display:grid; gap:.35em; border-top:1px solid var(--dark); padding-top:.55em; }
+.sat-strip .sat-facts section[data-field] { display:grid; grid-template-columns:5.5em minmax(0,1fr); gap:.6em; align-items:baseline; padding:0; margin:0; border:0; min-height:1.65em; }
+.sat-strip .sat-facts :is(h3,p) { margin:0; line-height:1.25; overflow-wrap:anywhere; }
+.data-footer { bottom:2.15rem; left:calc(var(--rail) + 1rem); display:flex; gap:1em; padding:.15em .35em; }
+.map-key { bottom:3.65rem; left:calc(var(--rail) + 1rem); }

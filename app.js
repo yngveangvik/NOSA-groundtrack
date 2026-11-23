@@ -43,7 +43,7 @@
     "About": "Om visningen",
     "Calculated from public orbital elements": "Beregnet fra offentlige baneelementer",
     "Restore defaults": "Gjenopprett standardvalg",
-    "NEXT 6 HOURS · UTC": "NESTE 6 TIMER · UTC",
+    "NEXT 6 HOURS (UTC)": "NESTE 6 TIMER (UTC)",
     "Calculating passes …": "Beregner passeringer …",
     "Selected satellite": "Valgt satellitt",
     "Loading satellites …": "Laster satellitter …",
@@ -51,6 +51,8 @@
     "Ground station": "Bakkestasjon",
     "Mission": "Oppdrag",
     "Waiting for orbital elements": "Venter på baneelementer",
+    "Calculated position": "Beregnet posisjon",
+    "CelesTrak data (SGP4)": "CelesTrak-data (SGP4)",
     "Altitude": "Høyde",
     "Inertial speed": "Banehastighet",
     "Sub-satellite latitude": "Breddegrad under satellitten",
@@ -66,7 +68,7 @@
     "Orbital element age": "Baneelementenes alder",
     "Elevation": "Elevasjon",
     "Azimuth": "Asimut",
-    "Geometric visibility · minimum elevation 10°": "Geometrisk sikt · minste elevasjon 10°",
+    "Geometric visibility above 10° elevation": "Geometrisk sikt over 10° elevasjon",
     "Owner": "Eier",
     "Operator": "Operatør",
     "Launch site": "Oppskytingssted",
@@ -86,7 +88,7 @@
     "Predicted passes indicate geometric visibility above 10° elevation at the selected station. The display checks for updated orbital elements hourly. Cached elements support offline calculation.": "Beregnede passeringer viser når satellitten er synlig over 10° elevasjon fra valgt stasjon. Visningen ser etter nye baneelementer hver time. Lagrede baneelementer kan brukes uten nett.",
     "Orbital elements: CelesTrak": "Baneelementer: CelesTrak",
     "Propagation: satellite.js": "Baneberegning: satellite.js",
-    "Coastlines: Natural Earth · public domain": "Kystlinjer: Natural Earth · offentlig eiendom",
+    "Coastlines: Natural Earth (public domain)": "Kystlinjer: Natural Earth (offentlig eiendom)",
     "Norwegian satellite ground tracks for desktop and TV.": "Banespor for norske satellitter på dataskjerm og TV.",
     "Featured satellite": "Satellitten som vises",
     "Map projection": "Kartprojeksjon",
@@ -117,10 +119,10 @@
     "Satellite icon": "Satellittikon",
     "Orbital elements unavailable": "Baneelementer utilgjengelige",
     "No ground track": "Ingen banespor",
-    "Nearly stationary · ±12 h": "Tilnærmet stasjonær · ±12 t",
+    "Nearly stationary (±12 h)": "Tilnærmet stasjonær (±12 t)",
     "Day at sub-satellite point": "Dag under satellitten",
     "Night at sub-satellite point": "Natt under satellitten",
-    "Mission ended · unavailable on map": "Oppdrag avsluttet · vises ikke på kartet",
+    "Mission ended": "Oppdraget er avsluttet",
     "Epoch in the future": "Epoke i fremtiden",
     "No prediction available": "Ingen beregning tilgjengelig",
     "Within station visibility": "Synlig fra stasjonen",
@@ -128,8 +130,8 @@
     "Older orbital elements": "Eldre baneelementer",
     "Orbital elements updated": "Baneelementer oppdatert",
     "Cached orbital elements": "Lagrede baneelementer",
-    "CelesTrak · checking for updates": "CelesTrak · ser etter oppdateringer",
-    "CelesTrak · online update unavailable": "CelesTrak · kunne ikke hente oppdatering",
+    "Checking CelesTrak for updates": "Ser etter oppdateringer fra CelesTrak",
+    "CelesTrak update unavailable": "Kunne ikke hente oppdatering fra CelesTrak",
     "Pass calculation failed.": "Kunne ikke beregne passeringer.",
     "Reload to retry.": "Last siden på nytt for å prøve igjen.",
     "Pass prediction requires Web Workers.": "Beregning av passeringer krever støtte for Web Workers.",
@@ -144,8 +146,8 @@
     "Before window": "Før tidsrommet",
     "Fullscreen unavailable. Open this page in a separate window.": "Fullskjerm er utilgjengelig. Åpne siden i et eget vindu.",
     "Sidebar full. Clear a field to make room.": "Venstremargen er full. Fjern et felt for å få plass.",
-    "World · Miller projection": "Verden · Millers projeksjon",
-    "Polar · north of 30° N": "Polarkart · nord for 30° N",
+    "World (Miller projection)": "Verden (Millers projeksjon)",
+    "Arctic north of 30° N": "Polarkart nord for 30° N",
     "Display unavailable. Open via a web server and retry.": "Visningen er utilgjengelig. Åpne siden via en nettserver og prøv igjen.",
     "Loading failed": "Innlasting mislyktes",
     "Norwegian Space Agency": "Direktoratet for romvirksomhet",
@@ -275,7 +277,7 @@
     updateLabelObstacles();
   }
   function updateLabelObstacles(){
-    const origin=canvas.getBoundingClientRect();labelObstacles=[...document.querySelectorAll('.brand,.utc,.map-caption,#panel-toggle,#sat-strip,.overlay:not([hidden])')].map(e=>e.getBoundingClientRect()).filter(r=>r.width&&r.height).map(r=>({x:r.left-origin.left-6,y:r.top-origin.top-6,w:r.width+12,h:r.height+12}));
+    const origin=canvas.getBoundingClientRect();labelObstacles=[...document.querySelectorAll('.brand,.utc,.data-footer,.map-key,.map-caption,#panel-toggle,#sat-strip,.overlay:not([hidden])')].map(e=>e.getBoundingClientRect()).filter(r=>r.width&&r.height).map(r=>({x:r.left-origin.left-6,y:r.top-origin.top-6,w:r.width+12,h:r.height+12}));
   }
   function currentTime(){if(live)return Date.now();return paused?anchorTime:anchorTime+(Date.now()-anchorWall)*rate;}
   function setTime(ms,{isLive=false,isPaused=paused,newRate=rate}={}){time=ms;anchorTime=ms;anchorWall=Date.now();live=isLive;paused=isPaused;rate=newRate;pathsDirty=true;shadeDirty=true;syncTimeControls();schedulePasses();}
@@ -283,7 +285,7 @@
     $('pause').textContent=paused?tr("Play"):tr("Pause");$('pause').setAttribute('aria-pressed',String(paused));$('now').setAttribute('aria-pressed',String(live));$('rate').value=String(rate);
     const offset=Math.round((time-Date.now())/60000);$('time-offset').value=String(Math.max(-720,Math.min(720,offset)));$('time-offset').setAttribute('aria-valuetext',`${offset} minutes from now`);
     $('time-mode').textContent=live?tr("REAL TIME"):paused?tr("PAUSE"):`${nb()?'SIMULERT':'SIMULATED'} ${rate}×`;
-    $('footer-summary').textContent=live?tr("Calculated from public orbital elements"):`${nb()?'Simulert tid':'Simulated time'} · ${dateFormat.format(time)} ${timeFormat.format(time)} UTC`;
+    $('footer-summary').textContent=live?tr("Calculated from public orbital elements"):`${nb()?'Simulert tid':'Simulated time'}: ${dateFormat.format(time)} ${timeFormat.format(time)} UTC`;
   }
   function accept(rows){
     let changed=false;
@@ -334,9 +336,11 @@
       }
     }
   }
-  function launchLabel(value){
+  function launchLabel(value, includeAge=true){
     if(!value) return tr("Unavailable");
     const launched = new Date(value);
+    const timestamp=dateFormat.format(launched)+(value.includes('T')?' '+timeFormat.format(launched)+' UTC':'');
+    if(!includeAge)return timestamp;
     const today = new Date();
     const start = new Date(Date.UTC(launched.getUTCFullYear(), launched.getUTCMonth(), launched.getUTCDate()));
     const end = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
@@ -349,15 +353,16 @@
     if(anniversary(months)>end) months--;
     const days = Math.round((end-anniversary(months))/86400000);
     const elapsed = [[Math.floor(months/12),'year'],[months%12,'month'],[days,'day']].map(([n,u])=>n+' '+(nb()?({year:'år',month:n===1?'måned':'måneder',day:n===1?'dag':'dager'})[u]:u+(n===1?'':'s'))).join(', ');
-    return dateFormat.format(launched)+(value.includes('T')?' · '+timeFormat.format(launched)+' UTC':'')+' ('+elapsed+(nb()?' siden)':' ago)');
+    return timestamp+' ('+elapsed+(nb()?' siden)':' ago)');
   }
   function showProfile(s){
     const portrait=$('portrait');
     portrait.src=s.portrait || 'assets/satellite-alt.svg';
-    portrait.alt=s.portrait ? s.name+' · '+tr(s.portraitCredit) : tr("Satellite icon");
+    portrait.alt=s.portrait ? s.name+', '+tr(s.portraitCredit) : tr("Satellite icon");
     portrait.title=portrait.alt;
     portrait.classList.toggle('fallback',!s.portrait);
     $('launch-date').textContent=launchLabel(s.launchDate);
+    $('rail-launch-date').textContent=launchLabel(s.launchDate,false);
     $('launch-site').textContent=tr(s.launchSite);
     $('capabilities').replaceChildren(...s.capabilities.map(capability => {
       const row = document.createElement('li');
@@ -377,32 +382,42 @@
       $(id).textContent=Number.isFinite(earthRadii)?fmt(earthRadii*satellite.constants.earthRadius)+' km':'–';
     }
     $('mean-motion').textContent=s.omm?fmt(s.omm.MEAN_MOTION,4)+(nb()?' omløp/døgn':' rev/day'):'–';
-    $('epoch').textContent=s.omm?dateFormat.format(C.epoch(s.omm))+' · '+timeFormat.format(C.epoch(s.omm))+' UTC':tr("Orbital elements unavailable");
+    $('epoch').textContent=s.omm?dateFormat.format(C.epoch(s.omm))+' '+timeFormat.format(C.epoch(s.omm))+' UTC':tr("Orbital elements unavailable");
     const minutes=s.omm?1440/s.omm.MEAN_MOTION:0;
-    $('track-window').textContent=!s.record?tr("No ground track"):s.type==='GEO'?tr("Nearly stationary · ±12 h"):`−${minutes>=120?fmt(minutes/60,1)+(nb()?' t':' h'):fmt(minutes)+' min'} / +${minutes>=120?fmt(minutes*2/60,1)+(nb()?' t':' h'):fmt(minutes*2)+' min'}`;
+    $('track-window').textContent=!s.record?tr("No ground track"):s.type==='GEO'?tr("Nearly stationary (±12 h)"):`−${minutes>=120?fmt(minutes/60,1)+(nb()?' t':' h'):fmt(minutes)+' min'} / +${minutes>=120?fmt(minutes*2/60,1)+(nb()?' t':' h'):fmt(minutes*2)+' min'}`;
     updateReadout();
     updateLabelObstacles();
+  }
+  function syncRailValue(el){
+    const value=$(el.dataset.source).textContent;
+    if(!el.closest('.instrument-grid')){el.textContent=value;return;}
+    const match=/^([\d.,\s]+)(°| km| min)$/.exec(value);
+    if(!match){el.textContent=value;return;}
+    const unit=document.createElement('small');
+    unit.textContent=match[2];el.replaceChildren(match[1],unit);
   }
   function updateReadout(){
     if(!active)return;const s=active,p=s.position;
     $('height').innerHTML=p?fmt(p.height)+' <small>km</small>':'–';$('speed').innerHTML=p?fmt(p.speed,2)+' <small>km/s</small>':'–';
     $('latitude').textContent=p?fmt(Math.abs(p.lat),2)+'° '+(p.lat<0?'S':'N'):'–';$('longitude').textContent=p?fmt(Math.abs(p.lon),2)+'° '+(p.lon<0?(nb()?'V':'W'):(nb()?'Ø':'E')):'–';
     $('strip-height').innerHTML=$('height').innerHTML;$('strip-speed').innerHTML=$('speed').innerHTML;$('strip-latitude').textContent=$('latitude').textContent;$('strip-longitude').textContent=$('longitude').textContent;
-    $('position-status').textContent=p?'SGP4 · '+(C.lightAt(C.solar(time),p.lat,p.lon)>=0?tr("Day at sub-satellite point"):tr("Night at sub-satellite point")):s.id===-2?tr("Mission ended · unavailable on map"):tr("Orbital elements unavailable");
+    $('position-status').textContent=p?(C.lightAt(C.solar(time),p.lat,p.lon)>=0?tr("Day at sub-satellite point"):tr("Night at sub-satellite point")):s.id===-2?tr("Mission ended"):tr("Orbital elements unavailable");
     const age=s.omm?(Date.now()-C.epoch(s.omm))/3600000:0,simAge=s.omm?Math.abs(time-C.epoch(s.omm))/3600000:0;
-    $('epoch-age').textContent=s.omm?(age>=0?`${age>=48?fmt(age/24,1)+(nb()?' døgn':' days'):fmt(age,1)+(nb()?' t':' hours')} ${nb()?'gamle':'old'}`:tr("Epoch in the future"))+(simAge>168?(nb()?' · langt fra epoken':' · far from epoch'):''):'–';
-    $('strip-data').textContent=(nb()?'Beregnet posisjon · offentlige baneelementer ':'Calculated position · public orbital elements ')+(s.omm?(age>=0?(age>=48?fmt(age/24,1)+(nb()?' døgn':' days'):fmt(age,1)+(nb()?' t':' hours'))+(nb()?' gamle':' old'):(nb()?'med fremtidig epoke':'with future epoch')):(nb()?'utilgjengelige':'unavailable'))+(simAge>168?(nb()?' · langt fra epoken':' · far from epoch'):'');
+    $('epoch-age').textContent=s.omm?(age>=0?`${age>=48?fmt(age/24,1)+(nb()?' døgn':' days'):fmt(age,1)+(nb()?' t':' hours')} ${nb()?'gamle':'old'}`:tr("Epoch in the future"))+(simAge>168?(nb()?' (langt fra epoken)':' (far from epoch)'):''):'–';
+    $('strip-data').textContent=s.omm
+      ? (nb()?'Baneelementenes alder: ':'Element age: ')+(age<0?tr("Epoch in the future"):age>=48?fmt(age/24,1)+(nb()?' døgn':' days'):fmt(age,1)+(nb()?' t':' hours'))
+      : tr("Orbital elements unavailable");
     updatePassSummary();
     $('epoch-age').style.color=s.omm&&(age>168||simAge>168)?COLORS.selected:'';
-    $('sidebar-station-name').textContent=tr('Ground station')+' · '+station.name;
+    $('sidebar-station-name').textContent=tr('Ground station')+': '+station.name;
     const angles=C.look(p,station);$('elevation').textContent=angles?fmt(angles.elevation,1)+'°':'–';$('azimuth').textContent=angles?fmt(angles.azimuth,1)+'°':'–';
     const inView=angles&&angles.elevation>=10;$('visibility').textContent=!angles?tr("No prediction available"):inView?tr("Within station visibility"):tr("Outside station visibility");$('visibility').classList.toggle('in-view',!!inView);
-    for(const el of mirrors) el.textContent=$(el.dataset.source).textContent;
+    for(const el of mirrors)syncRailValue(el);
     sidebarFit();
     const old=fleet.filter(s=>s.omm&&(Date.now()-C.epoch(s.omm)>7*86400000));$('data-mark').className='live-mark'+(old.length?' stale':receivedOnline?' fresh':'');
     $('data-status').textContent=old.length?tr("Older orbital elements"):receivedOnline?tr("Orbital elements updated"):tr("Cached orbital elements");
-    $('data-detail').textContent=receivedOnline?`${onlineCount}/${fleet.filter(s=>s.record).length} ${nb()?'hentet':'retrieved'} · ${timeFormat.format(receivedOnline)} UTC`:tr("CelesTrak · checking for updates");
-    if(networkAttempt&&!receivedOnline&&!networkBusy)$('data-detail').textContent=tr("CelesTrak · online update unavailable");
+    $('data-detail').textContent=receivedOnline?`${onlineCount}/${fleet.filter(s=>s.record).length} ${nb()?'hentet':'retrieved'} ${timeFormat.format(receivedOnline)} UTC`:tr("Checking CelesTrak for updates");
+    if(networkAttempt&&!receivedOnline&&!networkBusy)$('data-detail').textContent=tr("CelesTrak update unavailable");
   }
   function resize(){
     const box=canvas.getBoundingClientRect();w=box.width;h=box.height;dpr=Math.min(devicePixelRatio||1,2);unitScale=parseFloat(getComputedStyle(document.documentElement).fontSize)/16;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
@@ -499,19 +514,27 @@
       for(const [dx,dy] of [[12,-12],[12,16],[12,-30],[12,34],[-width-12,-12],[-width-12,18],[12,-48],[12,52]]){
         const x=Math.max(8,Math.min(w-width-8,p.x+dx*fs)),y=Math.max(height,Math.min(h-8,p.y+dy*fs));const box={x,y:y-height,w:width+5,h:height+2};
         if(occupied.some(b=>box.x<b.x+b.w&&box.x+box.w>b.x&&box.y<b.y+b.h&&box.y+box.h>b.y))continue;
-        occupied.push(box);ctx.strokeStyle='#000000';ctx.lineWidth=4;ctx.lineJoin='round';ctx.strokeText(text,x,y);ctx.fillStyle=color;ctx.fillText(text,x,y);hitTargets.push({...box,entity});return;
+        occupied.push(box);ctx.strokeStyle='#000000';ctx.lineWidth=4;ctx.lineJoin='round';ctx.strokeText(text,x,y);ctx.fillStyle=color;ctx.fillText(text,x,y);hitTargets.push({...box,entity});return true;
       }
     }
+    const stationsToLabel=[];
     ctx.save();
     if(showStations){
-      for(const s of stations){const p=project(s.lon,s.lat);if(!p.visible)continue;const selected=s===station;ctx.strokeStyle=selected?'#F0F0F0':'#A8A8A8';ctx.globalAlpha=selected?.95:.45;ctx.lineWidth=1;ctx.strokeRect(p.x-3,p.y-3,6,6);if(selected){ctx.strokeRect(p.x-6,p.y-6,12,12);label(s.name,p,'#F0F0F0');}hitTargets.push({x:p.x-8,y:p.y-8,w:16,h:16,station:s});}
+      for(const s of stations){const p=project(s.lon,s.lat);if(!p.visible)continue;const selected=s===station;ctx.strokeStyle=selected?'#F0F0F0':'#A8A8A8';ctx.globalAlpha=selected?.95:.45;ctx.lineWidth=1;ctx.strokeRect(p.x-3,p.y-3,6,6);if(selected){ctx.strokeRect(p.x-6,p.y-6,12,12);stationsToLabel.push([s.name,p]);}hitTargets.push({x:p.x-8,y:p.y-8,w:16,h:16,station:s});}
     }
     const sats=visibleFleet().filter(s=>s.position).sort((a,b)=>(b===active)-(a===active));
     for(const s of sats){const p=project(s.position.lon,s.position.lat);if(!p.visible)continue;const selected=s===active,color=selected?COLORS.selected:"#F0F0F0",size=(selected?18:13)*fs;
       ctx.globalAlpha=1;if(selected){ctx.strokeStyle=color;ctx.globalAlpha=.8;ctx.lineWidth=1;ctx.beginPath();ctx.arc(p.x,p.y,size*.9,0,Math.PI*2);ctx.stroke();if(!reducedMotion.matches){const phase=(now%2400)/2400;ctx.globalAlpha=.65*(1-phase);ctx.beginPath();ctx.arc(p.x,p.y,size*(.9+phase*1.2),0,Math.PI*2);ctx.stroke();}ctx.globalAlpha=1;}
       const im=getIcon(color);if(im)ctx.drawImage(im,p.x-size/2,p.y-size/2,size,size);else{ctx.fillStyle=color;ctx.fillRect(p.x-3,p.y-3,6,6);}
-      label(s.name,p,color,selected,s);hitTargets.push({x:p.x-12,y:p.y-12,w:24,h:24,entity:s});
+      hitTargets.push({x:p.x-12,y:p.y-12,w:24,h:24,entity:s});
     }
+    const named=[];
+    for(const sat of sats){
+      const point=project(sat.position.lon,sat.position.lat);
+      if(!point.visible||named.some(p=>Math.hypot(point.x-p.x,point.y-p.y)<24*fs))continue;
+      if(label(sat.name,point,sat===active?COLORS.selected:"#F0F0F0",sat===active,sat))named.push(point);
+    }
+    for(const [name,point] of stationsToLabel)label(name,point,'#F0F0F0');
     ctx.restore();
   }
   function draw(now){
@@ -542,7 +565,7 @@
     }
   }
   function updatePassSummary(){
-    const label=$('strip-pass-label'),value=$('strip-pass');label.textContent=tr('Predicted pass')+' · '+station.name;
+    const label=$('strip-pass-label'),value=$('strip-pass');label.textContent=tr('Predicted pass')+': '+station.name;
     if(!active?.record){value.textContent=tr("Orbital elements unavailable");return;}
     if(passBusy){value.textContent=tr("Calculating …");return;}
     const pass=passEvents.find(p=>p.id===active.id&&p.end>time);
@@ -550,7 +573,7 @@
     const start = pass.ongoing ? tr("Before window") : timeFormat.format(pass.start);
     const end = (pass.continues ? (nb()?'etter ':'after ') : '') + timeFormat.format(pass.end);
     const peakLabel = pass.ongoing || pass.continues ? tr("Peak in window") : tr("Peak elevation");
-    value.textContent = start+' – '+end+' UTC · '+peakLabel+' '+fmt(pass.max,0)+'°';
+    value.textContent = start+' – '+end+' UTC\n'+peakLabel+' '+fmt(pass.max,0)+'°';
   }
   function setStation(s){station=s;$('observer').value=s.name;schedulePasses();updateReadout();}
   function setTV(enabled){tv=enabled;document.body.classList.toggle('tv',tv);$('tv').setAttribute('aria-pressed',String(tv));resize();}
@@ -606,6 +629,8 @@
       const metrics=document.querySelector('#sat-strip > .instrument-grid');
       metrics.hidden=!metrics.querySelector('[data-field]:not([hidden])');
       $('sidebar-station').hidden=!$('sidebar-station').querySelector('[data-field]:not([hidden])');
+      const facts=document.querySelector('.sat-facts');
+      facts.hidden=!facts.querySelector('[data-field]:not([hidden])');
       const rail = $('sat-strip');
       const full = rail.scrollHeight > rail.clientHeight+1;
       if(full && chosen.size){
@@ -643,7 +668,7 @@
       timeFormat=new Intl.DateTimeFormat(locale(),{timeZone:'UTC',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
       dateFormat=new Intl.DateTimeFormat(locale(),{timeZone:'UTC',day:'2-digit',month:'short',year:'numeric'});
       for(const label of document.querySelectorAll('[data-field-label]'))label.lastChild.data=tr(label.dataset.fieldLabel);
-      $('map-description').textContent=tr(view==='world'?'World · Miller projection':'Polar · north of 30° N');
+      $('map-description').textContent=tr(view==='world'?'World (Miller projection)':'Arctic north of 30° N');
       $('rotation').textContent=tr(autoRotate?'Pause switching':'Resume switching');
       $('rotation').setAttribute('aria-label',tr(autoRotate?'Pause automatic switching':'Resume automatic switching'));
       $('fullscreen').textContent=tr(document.fullscreenElement?'Exit fullscreen':'Fullscreen');
@@ -667,7 +692,7 @@
     $('rotation-interval').value=String(rotationInterval/1000);$('rotation-interval').onchange=e=>{const seconds=Number(e.target.value);if(!intervals.includes(seconds))return;rotationInterval=seconds*1000;try{localStorage.setItem('norge-display-interval',String(seconds));}catch{}resetRotation();updateRotation(performance.now());};
     for(const s of stations){const o=document.createElement('option');o.value=s.name;o.textContent=s.name;$('observer').append(o);}$('observer').value=station.name;$('observer').onchange=e=>setStation(stations.find(s=>s.name===e.target.value));
     document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));if(filter!=='All'&&active?.type!==filter)select(visibleFleet().find(s=>s.record)||visibleFleet()[0]);resetRotation();pathsDirty=true;renderFleet();describe();schedulePasses();});
-    document.querySelectorAll('[data-view]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.view===view));b.onclick=()=>{view=b.dataset.view;document.querySelectorAll('[data-view]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));$('map-description').textContent=view==='world'?tr("World · Miller projection"):tr("Polar · north of 30° N");resize();};});
+    document.querySelectorAll('[data-view]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.view===view));b.onclick=()=>{view=b.dataset.view;document.querySelectorAll('[data-view]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));$('map-description').textContent=view==='world'?tr("World (Miller projection)"):tr("Arctic north of 30° N");resize();};});
     for(const [id,get,set] of [['stations',()=>showStations,v=>showStations=v],['footprint',()=>showFootprint,v=>showFootprint=v]])$(id).onclick=()=>{const v=!get();set(v);$(id).setAttribute('aria-pressed',String(v));};
     $('now').onclick=()=>setTime(Date.now(),{isLive:true,isPaused:false,newRate:1});$('pause').onclick=()=>setTime(currentTime(),{isPaused:!paused});$('rate').onchange=e=>setTime(currentTime(),{newRate:Number(e.target.value),isPaused:false});$('time-offset').oninput=e=>setTime(Date.now()+Number(e.target.value)*60000,{isPaused:true});
     $('tv').onclick=()=>setTV(!tv);$('fullscreen').onclick=fullscreen;document.addEventListener('fullscreenchange',()=>{$('fullscreen').textContent=document.fullscreenElement?tr("Exit fullscreen"):tr("Fullscreen");});
@@ -679,14 +704,14 @@
   }
   function frame(now){
     time=currentTime();if(now-lastDraw>=50){for(const s of fleet)s.position=s.record?C.position(s.record,time):null;updateRotation(now);draw(now);lastDraw=now;}
-    if(now-lastUI>=1000){$('clock').textContent=new Date(time).toISOString().slice(11,19);$('date').textContent=dateFormat.format(time)+(live?(nb()?' · SANNTID':' · REAL TIME'):paused?' · PAUSE':(nb()?' · SIMULERT':' · SIMULATED'));syncTimeControls();updateReadout();if(Math.floor(time/60000)!==lastPassTextMinute){renderPasses();lastPassTextMinute=Math.floor(time/60000);}lastUI=now;}
+    if(now-lastUI>=1000){$('clock').textContent=new Date(time).toISOString().slice(11,19);$('date').textContent=dateFormat.format(time)+(live?'':paused?(nb()?' (PAUSET)':' (PAUSED)'):(nb()?' (SIMULERT)':' (SIMULATED)'));syncTimeControls();updateReadout();if(Math.floor(time/60000)!==lastPassTextMinute){renderPasses();lastPassTextMinute=Math.floor(time/60000);}lastUI=now;}
     if(!passBusy&&Date.now()-lastPassWall>1500&&(Math.abs(time-passFrom)>60000||time>=passTo)&&!passTimer){requestPasses();}
     requestAnimationFrame(frame);
   }
   try{
     if(typeof satellite==='undefined')throw new Error('Could not load calculations.');
     const results=await Promise.all([fetch('fleet.json').then(r=>{if(!r.ok)throw Error();return r.json();}),fetch('orbits.json').then(r=>{if(!r.ok)throw Error();return r.json();}),fetch('assets/coastline.geojson').then(r=>{if(!r.ok)throw Error();return r.json();})]);
-    fleet=results[0];coasts=results[2].features.flatMap(f=>f.geometry.type==='LineString'?[f.geometry.coordinates]:f.geometry.type==='MultiLineString'?f.geometry.coordinates:[]);active=fleet.find(s=>s.id===Number(params.get('sat')))||fleet[0];$('map-description').textContent=view==='world'?tr("World · Miller projection"):tr("Polar · north of 30° N");
+    fleet=results[0];coasts=results[2].features.flatMap(f=>f.geometry.type==='LineString'?[f.geometry.coordinates]:f.geometry.type==='MultiLineString'?f.geometry.coordinates:[]);active=fleet.find(s=>s.id===Number(params.get('sat')))||fleet[0];$('map-description').textContent=view==='world'?tr("World (Miller projection)"):tr("Arctic north of 30° N");
     accept(results[1]);bind();renderFleet();describe();resize();$('map-message').hidden=true;setTV(params.get('tv')==='1');setPanels(false);setRotation(true);schedulePasses();restoreOrbitCache();refresh();requestAnimationFrame(frame);
   }catch(e){$('map-message').textContent=tr("Display unavailable. Open via a web server and retry.");$('data-status').textContent=tr("Loading failed");console.error(e);}
 })();
