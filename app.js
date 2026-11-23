@@ -16,7 +16,7 @@
   let rotationInterval=20000;
   try{const saved=Number(localStorage.getItem('norge-display-interval'));if(intervals.includes(saved))rotationInterval=saved*1000;}catch{}
   const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
-  let outgoing=null,transitionStarted=0;
+  let outgoing=null,transitionStarted=-Infinity;
   let panelsOpen=false,autoRotate=true,rotationDeadline=0,lastRotationText='',labelObstacles=[];
   let showStations=true,showFootprint=false,pathsDirty=true,lastPathWall=0,pathTime=0,trackCache=new Map();
   let passWorker=null,requestId=0,passEvents=[],passFrom=0,passTo=0,lastPassWall=0,passTimer=0,passBusy=false;
@@ -85,7 +85,29 @@
     $('fleet-count').textContent=String(fleet.filter(s=>s.record).length);
     if(focused)list.querySelector('[data-satellite="'+focused+'"]')?.focus({preventScroll:true});
   }
-  function select(s,{automatic=false}={}){if(active&&active!==s){outgoing=null;transitionStarted=performance.now();trackCache.clear();lastPathWall=0;if(!reducedMotion.matches)$('sat-strip').animate([{opacity:.25},{opacity:1}],{duration:650,easing:'ease-out'});}active=s;if(s.record)s.position=C.position(s.record,currentTime());pathsDirty=true;if(!automatic)resetRotation();renderFleet();describe();renderPasses();}
+  function select(s,{automatic=false}={}){
+    if(!s)return;
+    const changed=active!==s;
+    if(changed){
+      outgoing=trackCache.get(active?.id);
+      transitionStarted=performance.now();
+      trackCache.clear();
+      lastPathWall=-Infinity;
+    }
+    active=s;
+    if(s.record)s.position=C.position(s.record,currentTime());
+    pathsDirty=true;
+    if(!automatic)resetRotation();
+    renderFleet();describe();renderPasses();
+    if(changed&&!reducedMotion.matches){
+      for(const el of $('sat-strip').children){
+        if(el.hidden)continue;
+        for(const animation of el.getAnimations())animation.cancel();
+        const delay=el.matches('.identity')?0:el.id==='strip-mission'?65:125;
+        el.animate([{opacity:0},{opacity:1}],{duration:330,delay,fill:'backwards',easing:'ease-out'});
+      }
+    }
+  }
   function launchLabel(value){
     if(!value) return 'Unavailable';
     const launched = new Date(value);
@@ -198,7 +220,7 @@
     const image=sctx.createImageData(sw,sh),sun=C.solar(time),p=image.data;
     for(let y=0;y<sh;y++)for(let x=0;x<sw;x++){
       let lat,lon;if(view==='world'){lat=inverseMill(millMax-(y+.5)/sh*2*millMax);lon=(x+.5)/sw*360-180;}else{const dx=(x+.5-sw/2)/(sw/2),dy=(y+.5-sh/2)/(sh/2),r=Math.hypot(dx,dy);if(r>1)continue;lat=90-r*60;lon=Math.atan2(dx,dy)/D;}
-      const light=C.lightAt(sun,lat,lon),i=(y*sw+x)*4,day=Math.max(0,Math.min(1,(light+.065)/.13));p[i]=240;p[i+1]=240;p[i+2]=240;p[i+3]=Math.round(37*day);
+      const light=C.lightAt(sun,lat,lon),i=(y*sw+x)*4,day=Math.max(0,Math.min(1,(light+.065)/.13));p[i]=240;p[i+1]=240;p[i+2]=240;p[i+3]=Math.round(25*day);
     }
     sctx.putImageData(image,0,0);shadeDirty=false;lastShadeTime=time;lastShadeWall=now;
   }
@@ -211,14 +233,26 @@
     pathsDirty=false;pathTime=time;lastPathWall=now;
   }
   function drawTracks(now){
-    const t=reducedMotion.matches?1:Math.max(0,Math.min(1,(now-transitionStarted)/850));
-    function paint(paths,selectedId,opacity){
-      for(const [id,points] of paths){const sat=fleet.find(s=>s.id===id);if(!sat)continue;const selected=id===selectedId;
-        ctx.strokeStyle=selected?COLORS.selected:COLORS[sat.type];ctx.lineWidth=selected?1.55:.7;ctx.globalAlpha=(selected?.95:.13)*opacity;ctx.setLineDash([]);ctx.beginPath();trace(ctx,points.past);ctx.stroke();
-        ctx.globalAlpha=(selected?.75:.09)*opacity;ctx.setLineDash([4,5]);ctx.beginPath();trace(ctx,points.future);ctx.stroke();
-      }
+    const elapsed=reducedMotion.matches?Infinity:now-transitionStarted;
+    function stroke(points,count,dashed,opacity){
+      if(count<2)return;
+      ctx.globalAlpha=opacity;ctx.setLineDash(dashed?[4,5]:[]);
+      ctx.beginPath();trace(ctx,count>=points.length?points:points.slice(0,count));ctx.stroke();
     }
-    ctx.save();clip(ctx);if(outgoing&&t<1)paint(outgoing.paths,outgoing.id,1-t);else outgoing=null;paint(trackCache,active?.id,outgoing?t:1);ctx.restore();
+    ctx.save();clip(ctx);ctx.strokeStyle=COLORS.selected;ctx.lineWidth=1.55;
+    if(outgoing&&elapsed<180){
+      const fade=1-elapsed/180;
+      stroke(outgoing.past,outgoing.past.length,false,.95*fade);
+      stroke(outgoing.future,outgoing.future.length,true,.75*fade);
+    }else outgoing=null;
+    const track=trackCache.get(active?.id);
+    if(track){
+      const progress=Math.min(1,Math.max(0,elapsed/1200));
+      const segments=Math.floor(progress*(track.past.length+track.future.length-2));
+      stroke(track.past,segments+1,false,.95);
+      stroke(track.future,segments-track.past.length+2,true,.75);
+    }
+    ctx.restore();
   }
   function getIcon(color){
     if(!icon.complete||!icon.naturalWidth)return null;if(tintedIcons.has(color))return tintedIcons.get(color);
@@ -290,14 +324,36 @@
   function setStation(s){station=s;$('observer').value=s.name;schedulePasses();updateReadout();}
   function setTV(enabled){tv=enabled;document.body.classList.toggle('tv',tv);$('tv').setAttribute('aria-pressed',String(tv));resize();}
   async function fullscreen(){try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{notify('Fullscreen unavailable. Open this page in a separate window.');}}
+  const orbitCacheKey='norge-groundtrack-github-v1';
+  function restoreOrbitCache(){
+    try{
+      const cache=JSON.parse(localStorage.getItem(orbitCacheKey));
+      if(Array.isArray(cache?.rows))accept(cache.rows);
+      receivedOnline=cache?.received||0;onlineCount=cache?.count||0;
+    }catch{}
+  }
   async function refresh(){
-    if(networkBusy)return;let cache;try{cache=JSON.parse(localStorage.getItem('norge-groundtrack-github-v1'));}catch{}
-    if(cache?.rows)accept(cache.rows);if(cache?.attempt&&Date.now()-cache.attempt<7200000){networkAttempt=cache.attempt;receivedOnline=cache.received||0;onlineCount=cache.count||0;return;}
-    networkBusy=true;networkAttempt=Date.now();try{localStorage.setItem('norge-groundtrack-github-v1',JSON.stringify({attempt:networkAttempt,received:cache?.received||0,count:cache?.count||0,rows:fleet.filter(s=>s.omm).map(s=>s.omm)}));}catch{}
-    try{const res=await fetch('orbit-data.json',{signal:AbortSignal.timeout(35000)});if(res.ok){const data=await res.json();if(Array.isArray(data.rows)){accept(data.rows);if(data.onlineCount>0){receivedOnline=data.fetchedAt;onlineCount=data.onlineCount;}}}}catch{}
-    networkBusy=false;
-    try{localStorage.setItem('norge-groundtrack-github-v1',JSON.stringify({attempt:networkAttempt,received:receivedOnline,count:onlineCount,rows:fleet.filter(s=>s.omm).map(s=>s.omm)}));}catch{}
-    updateReadout();
+    if(networkBusy)return;
+    networkBusy=true;
+    networkAttempt=Date.now();
+    let delay=5*60*1000;
+    try{
+      const response=await fetch('orbit-data.json',{cache:'no-store',signal:AbortSignal.timeout(35000)});
+      if(!response.ok)throw Error('Orbit data unavailable');
+      const data=await response.json();
+      if(!Array.isArray(data.rows)||!data.rows.some(row=>row?.EPOCH&&row.MEAN_MOTION>0))throw Error('Invalid orbit data');
+      accept(data.rows.filter(Boolean));
+      if(data.onlineCount>0&&data.fetchedAt>=receivedOnline){
+        receivedOnline=data.fetchedAt;onlineCount=data.onlineCount;
+      }
+      delay=60*60*1000;
+      try{
+        const rows=fleet.filter(s=>s.omm).map(s=>s.omm);
+        localStorage.setItem(orbitCacheKey,JSON.stringify({received:receivedOnline,count:onlineCount,rows}));
+      }catch{}
+    }catch{}finally{
+      networkBusy=false;setTimeout(refresh,delay);updateReadout();
+    }
   }
   const railFields = [...document.querySelectorAll('#sat-strip [data-field]')];
   const mirrors = [...document.querySelectorAll('[data-source]')];
@@ -360,7 +416,7 @@
     }
     $('rotation-interval').value=String(rotationInterval/1000);$('rotation-interval').onchange=e=>{const seconds=Number(e.target.value);if(!intervals.includes(seconds))return;rotationInterval=seconds*1000;try{localStorage.setItem('norge-display-interval',String(seconds));}catch{}resetRotation();updateRotation(performance.now());};
     for(const s of stations){const o=document.createElement('option');o.value=s.name;o.textContent=s.name;$('observer').append(o);}$('observer').value=station.name;$('observer').onchange=e=>setStation(stations.find(s=>s.name===e.target.value));
-    document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));if(filter!=='All'&&active?.type!==filter)active=visibleFleet().find(s=>s.record)||visibleFleet()[0];resetRotation();pathsDirty=true;renderFleet();describe();schedulePasses();});
+    document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));if(filter!=='All'&&active?.type!==filter)select(visibleFleet().find(s=>s.record)||visibleFleet()[0]);resetRotation();pathsDirty=true;renderFleet();describe();schedulePasses();});
     document.querySelectorAll('[data-view]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.view===view));b.onclick=()=>{view=b.dataset.view;document.querySelectorAll('[data-view]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));$('map-description').textContent=view==='world'?'World · Miller projection':'Polar · north of 30° N';resize();};});
     for(const [id,get,set] of [['stations',()=>showStations,v=>showStations=v],['footprint',()=>showFootprint,v=>showFootprint=v]])$(id).onclick=()=>{const v=!get();set(v);$(id).setAttribute('aria-pressed',String(v));};
     $('now').onclick=()=>setTime(Date.now(),{isLive:true,isPaused:false,newRate:1});$('pause').onclick=()=>setTime(currentTime(),{isPaused:!paused});$('rate').onchange=e=>setTime(currentTime(),{newRate:Number(e.target.value),isPaused:false});$('time-offset').oninput=e=>setTime(Date.now()+Number(e.target.value)*60000,{isPaused:true});
@@ -381,6 +437,6 @@
     if(typeof satellite==='undefined')throw new Error('Could not load calculations.');
     const results=await Promise.all([fetch('fleet.json').then(r=>{if(!r.ok)throw Error();return r.json();}),fetch('orbits.json').then(r=>{if(!r.ok)throw Error();return r.json();}),fetch('assets/coastline.geojson').then(r=>{if(!r.ok)throw Error();return r.json();})]);
     fleet=results[0];coasts=results[2].features.flatMap(f=>f.geometry.type==='LineString'?[f.geometry.coordinates]:f.geometry.type==='MultiLineString'?f.geometry.coordinates:[]);active=fleet.find(s=>s.id===Number(params.get('sat')))||fleet[0];$('map-description').textContent=view==='world'?'World · Miller projection':'Polar · north of 30° N';
-    accept(results[1]);bind();renderFleet();describe();resize();$('map-message').hidden=true;setTV(params.get('tv')==='1');setPanels(false);setRotation(true);schedulePasses();refresh();setInterval(refresh,7200000);requestAnimationFrame(frame);
+    accept(results[1]);bind();renderFleet();describe();resize();$('map-message').hidden=true;setTV(params.get('tv')==='1');setPanels(false);setRotation(true);schedulePasses();restoreOrbitCache();refresh();requestAnimationFrame(frame);
   }catch(e){$('map-message').textContent='Display unavailable. Open via a web server and retry.';$('data-status').textContent='Loading failed';console.error(e);}
 })();
