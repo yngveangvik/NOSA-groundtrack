@@ -1,0 +1,72 @@
+name: Update orbit data and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Retrieve current CelesTrak orbital elements
+        env:
+          PAGES_BASE_URL: ${{ steps.pages.outputs.base_url }}
+        run: python3 scripts/update_orbits.py
+
+      - name: Verify the update and inspect element ages
+        run: |
+          python3 - <<'PY'
+          import datetime as dt
+          import json
+          p = json.load(open('orbit-data.json', encoding='utf-8'))
+          count = p.get('onlineCount', 0)
+          if not p.get('refreshSucceeded') or count == 0:
+              raise SystemExit('CelesTrak returned no orbital elements. Keeping previous published site.')
+          print(f'CelesTrak returned elements for {count} satellites.')
+          now = dt.datetime.now(dt.timezone.utc)
+          for row in p['rows']:
+              stamp = dt.datetime.fromisoformat(row['EPOCH'].replace('Z', '+00:00'))
+              if stamp.tzinfo is None:
+                  stamp = stamp.replace(tzinfo=dt.timezone.utc)
+              hours = (now - stamp).total_seconds() / 3600
+              name = row.get('OBJECT_NAME', str(row['NORAD_CAT_ID']))
+              print(f'{name} ({row["NORAD_CAT_ID"]}): element age {hours:.1f} hours')
+              if float(row['MEAN_MOTION']) > 10 and hours > 48:
+                  print(f'::warning::Old LEO elements for {name}: {hours:.1f} hours')
+          PY
+
+      - name: Build static site
+        run: |
+          touch .nojekyll
+          python3 scripts/build_site.py
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
